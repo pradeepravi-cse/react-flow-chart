@@ -13,7 +13,11 @@ background: rgba(0,0,0,0.05);
 export const DragAndDropSidebar = () => (
   <Page>
     <Content>
-      <FlowChartWithState initialValue={chartSimple} />
+      <FlowChartWithState initialValue={chartSimple}  customNodeDrop={() => {
+    alert("custom code dropped");
+  }}  customLinkComplete={() => {
+    alert("custom link dropped");
+  }} />
     </Content>
     <Sidebar>
       <Message>
@@ -28,14 +32,7 @@ export const DragAndDropSidebar = () => (
             properties: {
               custom: 'property',
             },
-          },
-          port2: {
-            id: 'port1',
-            type: 'bottom',
-            properties: {
-              custom: 'property',
-            },
-          },
+          }
         } }
         properties={ {
           custom: 'property',

@@ -51,28 +51,10 @@ export const chartSimple: IChart = {
     },
     node3: {
       id: "node3",
-      type: "excel-file-icon",
+      type: "ExcelFile-icon",
       position: {
         x: 300,
         y: 300,
-      },
-      ports: {
-        port1: {
-          id: "port1",
-          type: "input",
-        },
-        port2: {
-          id: "port2",
-          type: "output",
-        },
-      },
-    },
-    node4: {
-      id: "node4",
-      type: "excel-file-icon",
-      position: {
-        x: 300,
-        y: 600,
       },
       ports: {
         port1: {
@@ -113,17 +95,6 @@ export const chartSimple: IChart = {
       },
       properties: {
         label: "another example link label",
-      },
-    },
-    link3: {
-      id: "link3",
-      from: {
-        nodeId: "node3",
-        portId: "port2",
-      },
-      to: {
-        nodeId: "node4",
-        portId: "port1",
       },
     },
   },

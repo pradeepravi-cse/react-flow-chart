@@ -12,3 +12,11 @@ export interface IOffset {
   offsetLeft: number;
   offsetTop: number;
 }
+
+export interface INodeOperation {
+  type: string;
+  fromNode: string;
+  toNode: string;
+  pos:IPosition,
+  ports: any
+}

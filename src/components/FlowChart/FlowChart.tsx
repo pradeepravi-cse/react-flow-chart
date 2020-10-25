@@ -44,7 +44,6 @@ import {
   PortsDefault,
 } from "../../";
 import { getMatrix } from "./utils/grid";
-
 export interface IFlowChartCallbacks {
   onDragNode: IOnDragNode;
   onDragNodeStop: IOnDragNodeStop;
@@ -98,7 +97,9 @@ export interface IFlowChartProps {
    * Don't store state here as it may trigger re-renders
    */
   config?: IConfig;
-  customeNodeClick?: any;
+  customNodeClick?: any;
+  customNodeDrop?: any;
+  customLinkComplete?:any;
 }
 
 export const FlowChart = (props: IFlowChartProps) => {
@@ -106,7 +107,7 @@ export const FlowChart = (props: IFlowChartProps) => {
     width: number;
     height: number;
   }>({ width: 0, height: 0 });
-
+ 
   const {
     chart,
     callbacks: {
@@ -130,7 +131,7 @@ export const FlowChart = (props: IFlowChartProps) => {
       onNodeMouseEnter,
       onNodeMouseLeave,
       onNodeSizeChange,
-      onZoomCanvas,
+      onZoomCanvas
     },
     Components: {
       CanvasOuter = CanvasOuterDefault,
@@ -170,10 +171,35 @@ export const FlowChart = (props: IFlowChartProps) => {
     onLinkComplete,
     onLinkCancel,
   };
+  
+var rootElement = document.getElementById("root");
+let rootElementHeight = 800;
+if(rootElement)
+rootElementHeight = rootElement.clientHeight;
 
+ const outputSummaryIcon =  {
+  id: "OutputSummaryIcon",
+  type: "Data-icon",
+  position: {
+    x:35,
+    y: 0
+  },
+  ports: {
+    port1: {
+      id: "port1",
+      type: "input",
+      position: { x: 35, y: 0 }
+    }
+  },
+  size: {width: 70, height: 70}
+};
+
+outputSummaryIcon.position.y = rootElementHeight-70;
+
+chart.nodes["OutputSummaryIcon"] =outputSummaryIcon ;
   const nodesInView = Object.keys(nodes).filter((nodeId) => {
+  
     const defaultNodeSize = { width: 500, height: 500 };
-
     const { x, y } = nodes[nodeId].position;
     const size = nodes[nodeId].size || defaultNodeSize;
 
@@ -181,7 +207,9 @@ export const FlowChart = (props: IFlowChartProps) => {
     const isTooFarRight = scale * x + offset.x > canvasSize.width;
     const isTooFarUp = scale * y + offset.y + scale * size.height < 0;
     const isTooFarDown = scale * y + offset.y > canvasSize.height;
+
     return !(isTooFarLeft || isTooFarRight || isTooFarUp || isTooFarDown);
+    
   });
 
   const matrix = config.smartRouting
@@ -203,67 +231,74 @@ export const FlowChart = (props: IFlowChartProps) => {
   });
 
   return (
-    <CanvasWrapper
-      config={config}
-      position={chart.offset}
-      scale={chart.scale}
-      ComponentInner={CanvasInner}
-      ComponentOuter={CanvasOuter}
-      onSizeChange={(width, height) => setCanvasSize({ width, height })}
-      {...canvasCallbacks}
-    >
-      {linksInView.map((linkId) => {
-        const isSelected =
-          !config.readonly &&
-          selected.type === "link" &&
-          selected.id === linkId;
-        const isHovered =
-          !config.readonly && hovered.type === "link" && hovered.id === linkId;
-        const fromNodeId = links[linkId].from.nodeId;
-        const toNodeId = links[linkId].to.nodeId;
+    <div>
+      <div id="draggingCursor"></div>
+      <CanvasWrapper
+        config={config}
+        position={chart.offset}
+        scale={chart.scale}
+        ComponentInner={CanvasInner}
+        ComponentOuter={CanvasOuter}
+        onSizeChange={(width, height) => setCanvasSize({ width, height })}
+        {...canvasCallbacks}
+        customNodeDrop={props.customNodeDrop}
+      >
+        {linksInView.map((linkId) => {
+          const isSelected =
+            !config.readonly &&
+            selected.type === "link" &&
+            selected.id === linkId;
+          const isHovered =
+            !config.readonly &&
+            hovered.type === "link" &&
+            hovered.id === linkId;
+          const fromNodeId = links[linkId].from.nodeId;
+          const toNodeId = links[linkId].to.nodeId;
 
-        return (
-          <LinkWrapper
-            config={config}
-            key={linkId}
-            link={links[linkId]}
-            Component={Link}
-            isSelected={isSelected}
-            isHovered={isHovered}
-            fromNode={nodes[fromNodeId]}
-            toNode={toNodeId ? nodes[toNodeId] : undefined}
-            matrix={matrix}
-            {...linkCallbacks}
-          />
-        );
-      })}
-      {nodesInView.map((nodeId) => {
-        const isSelected = selected.type === "node" && selected.id === nodeId;
-        const selectedLink = getSelectedLinkForNode(selected, nodeId, links);
-        const hoveredLink = getSelectedLinkForNode(hovered, nodeId, links);
+          return (
+            <LinkWrapper
+              config={config}
+              key={linkId}
+              link={links[linkId]}
+              Component={Link}
+              isSelected={isSelected}
+              isHovered={isHovered}
+              fromNode={nodes[fromNodeId]}
+              toNode={toNodeId ? nodes[toNodeId] : undefined}
+              matrix={matrix}
+              {...linkCallbacks}
+            />
+          );
+        })}
+        {nodesInView.map((nodeId) => {
+          const isSelected = selected.type === "node" && selected.id === nodeId;
+          const selectedLink = getSelectedLinkForNode(selected, nodeId, links);
+          const hoveredLink = getSelectedLinkForNode(hovered, nodeId, links);
 
-        return (
-          <NodeWrapper
-            config={config}
-            key={nodeId}
-            Component={Node}
-            node={nodes[nodeId]}
-            offset={chart.offset}
-            isSelected={isSelected}
-            selected={selectedLink ? selected : undefined}
-            hovered={hoveredLink ? hovered : undefined}
-            selectedLink={selectedLink}
-            hoveredLink={hoveredLink}
-            NodeInner={NodeInner}
-            Ports={Ports}
-            Port={Port}
-            {...nodeCallbacks}
-            {...portCallbacks}
-            customNodeClick={props.customeNodeClick}
-          />
-        );
-      })}
-    </CanvasWrapper>
+          return (
+            <NodeWrapper
+              config={config}
+              key={nodeId}
+              Component={Node}
+              node={nodes[nodeId]}
+              offset={chart.offset}
+              isSelected={isSelected}
+              selected={selectedLink ? selected : undefined}
+              hovered={hoveredLink ? hovered : undefined}
+              selectedLink={selectedLink}
+              hoveredLink={hoveredLink}
+              NodeInner={NodeInner}
+              Ports={Ports}
+              Port={Port}
+              {...nodeCallbacks}
+              {...portCallbacks}
+              customNodeClick={props.customNodeClick}
+              customLinkComplete = {props.customLinkComplete}
+            />
+          );
+        })}
+      </CanvasWrapper>
+    </div>
   );
 };
 

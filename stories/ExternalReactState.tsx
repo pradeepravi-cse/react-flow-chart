@@ -23,8 +23,11 @@ export class ExternalReactState extends React.Component {
         <FlowChart
           chart={chart}
           callbacks={stateActions}
-          customeNodeClick={() => {
+          customNodeClick={() => {
             alert("custome code clicked");
+          }}
+          customNodeDrop={() => {
+            alert("custome code dropped");
           }}
         />
       </Page>

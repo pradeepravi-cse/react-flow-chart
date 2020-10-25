@@ -7,6 +7,8 @@ export interface IFlowChartWithStateProps {
   initialValue: IChart
   Components?: IFlowChartComponents
   config?: IConfig
+  customNodeDrop?:any
+  customLinkComplete?:any
 }
 
 /**
@@ -30,6 +32,8 @@ export class FlowChartWithState extends React.Component<IFlowChartWithStateProps
         callbacks={this.stateActions}
         Components={Components}
         config={config}
+        customNodeDrop={this.props.customNodeDrop}
+        customLinkComplete={this.props.customLinkComplete}
       />
     )
   }

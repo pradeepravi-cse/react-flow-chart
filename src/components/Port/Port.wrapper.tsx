@@ -34,6 +34,7 @@ export interface IPortWrapperProps {
   onLinkMove: IOnLinkMove
   onLinkCancel: IOnLinkCancel
   onLinkComplete: IOnLinkComplete
+  customLinkComplete?:any;
 }
 
 export class PortWrapper extends React.Component<IPortWrapperProps> {
@@ -98,6 +99,9 @@ export class PortWrapper extends React.Component<IPortWrapperProps> {
         const toPortId = portEl.getAttribute('data-port-id') as string
         const toNodeId = portEl.getAttribute('data-node-id') as string
         onLinkComplete({ config, linkId, startEvent, fromNodeId, fromPortId, toNodeId, toPortId })
+        if(fromNodeId == "OutputSummaryIcon" || toNodeId== "OutputSummaryIcon")
+        this.props.customLinkComplete();
+      
       } else {
         onLinkCancel({ config, linkId, startEvent, fromNodeId, fromPortId })
       }

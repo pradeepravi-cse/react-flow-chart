@@ -207,6 +207,7 @@ export const onDeleteKey: IStateCallback<IOnDeleteKey> = ({ config }: IConfig) =
 }
 
 export const onNodeClick: IStateCallback<IOnNodeClick> = ({ nodeId }) => (chart: IChart) => {
+  
   if (chart.selected.id !== nodeId || chart.selected.type !== 'node') {
     chart.selected = {
       type: 'node',

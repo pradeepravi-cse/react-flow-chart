@@ -17,18 +17,10 @@ export interface INodeDefaultProps {
 
 export const NodeDefault = styled.div<INodeDefaultProps>`
   position: absolute;
-  transition: 0.3s ease box-shadow, 0.3s ease margin-top;
-  width: 100px;
-  height: 100px;
-  padding: 10px;
+  height: 70px;
+  width: 70px;
   background: #eeeeee;
-  border: 3px solid #eeeeee;
-  box-shadow: inset -6px -6px 10px #ffffff, inset 3px 3px 5px #c4c4c4;
-  filter: drop-shadow(5px 5px 10px #c4c4c4), drop-shadow(-4px -4px 25px #ffffff);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   ${(props) =>
     props.isSelected &&
     css`

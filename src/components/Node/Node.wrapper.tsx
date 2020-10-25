@@ -55,6 +55,7 @@ export interface INodeWrapperProps {
   onNodeMouseEnter: IOnNodeMouseEnter;
   onNodeMouseLeave: IOnNodeMouseLeave;
   customNodeClick?: any;
+  customLinkComplete?:any;
 }
 
 export const NodeWrapper = ({
@@ -83,6 +84,7 @@ export const NodeWrapper = ({
   onLinkComplete,
   onLinkCancel,
   customNodeClick,
+  customLinkComplete
 }: INodeWrapperProps) => {
   const { zoomScale } = React.useContext(CanvasContext);
   const [size, setSize] = React.useState<ISize>({ width: 0, height: 0 });
@@ -206,6 +208,7 @@ export const NodeWrapper = ({
             onLinkMove={config.readonly ? noop : onLinkMove}
             onLinkComplete={onLinkComplete}
             onLinkCancel={onLinkCancel}
+            customLinkComplete={customLinkComplete}
           />
         ))}
       </Ports>

@@ -23,6 +23,7 @@ export interface ICanvasWrapperProps {
   ComponentOuter: React.FunctionComponent<ICanvasOuterDefaultProps>
   onSizeChange: (x: number, y: number) => void
   children: any
+  customNodeDrop: any
 }
 
 interface IState {
@@ -148,7 +149,8 @@ export class CanvasWrapper extends React.Component<ICanvasWrapperProps, IState> 
                         y: relativeClientY / scale - position.y / scale,
                       },
                       id: data.id || v4(),
-                    })
+                    });
+                    this.props.customNodeDrop();
                   }
                 }}
                 onDragOver={(e) => e.preventDefault()}
