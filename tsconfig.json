@@ -12,16 +12,18 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "allowJs": true,
-    "declaration": false,
-    "types": ["react"]
+    "declaration": true,
   },
   "include": ["src/index.ts", "src/custom.d.ts"],
-  "exclude": ["node_modules", "build", "scripts", "config"]
+  "exclude": ["node_modules", "build", "scripts", "config"],
+  "typeRoots": [
+    "../node_modules/@types"
+]
 }

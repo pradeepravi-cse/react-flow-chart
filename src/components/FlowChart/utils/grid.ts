@@ -7,7 +7,7 @@ const getEmptyMatrix = (width: number, height: number): number[][] => {
   const adjustedWidth = Math.ceil(width / (SCALE_FACTOR - 1)) + MATRIX_PADDING
   const adjustedHeight = Math.ceil(height / (SCALE_FACTOR - 1)) + MATRIX_PADDING
 
-  const matrix = []
+  const matrix: any = []
 
   for (let i = 0; i < adjustedHeight; i++) {
     matrix.push(new Array(adjustedWidth).fill(0))

@@ -5,7 +5,7 @@ export default function mapValues<
   const res: Res = {} as any
   for (const key in o) {
     if (o.hasOwnProperty(key)) {
-      res[key] = func(o[key])
+      res[key as any] = func(o[key])
     }
   }
   return res
