@@ -10,7 +10,7 @@
   "np": {
     "yarn": false,
     "contents": "dist"
-},
+  },
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@storybook/addon-centered": "^5.3.21",
